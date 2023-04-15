@@ -23,3 +23,7 @@ c#/hamiltonian/obj/Debug/net5.0/
 c#/hamiltonian/bin/
 
 c#/hamiltonian/obj/
+
+target/
+.idea
+*.iml

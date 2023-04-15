@@ -7,7 +7,7 @@ public class Hamiltonian {
     private Map<String, List<String>> usa;
     private List<String> easternStates;
 
-    private List<String> journey = new ArrayList<>();
+    private final List<String> journey = new ArrayList<>();
     private Map<String, List<String>> graph = new HashMap<>();
 
     public static void main(String[] args) {
@@ -76,7 +76,7 @@ public class Hamiltonian {
             return true;
         } else {
             for (String neighbour : graph.get(current)) {
-                if (journey.indexOf(neighbour) < 0) {
+                if (!journey.contains(neighbour)) {
                     if (findHamiltoniamRecursively(neighbour)) {
                         return true;
                     }

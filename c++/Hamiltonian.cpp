@@ -25,19 +25,18 @@ public:
 	}
 	char Key[10];
 	int Children_Count;
-	State* Children[10];
+	State *Children[10];
 	int journeyPos;
 };
-
 
 // Global list of States
 State gStates[49];
 int gVisitedCount;
 int gStateCount;
 bool gFilterStates;
-char gFilter[][4] = { "mn", "ia", "mo", "ar", "la", "wi", "il", "tn", "ms", "mi", "in", "ky", "al", "ga", "oh", "wv", "ny", "nj", "pa", "va", "nc", "sc", "fl", "me", "nh", "vt", "ma", "ct", "ri", "de", "md", "wdc" };
+char gFilter[][4] = {"mn", "ia", "mo", "ar", "la", "wi", "il", "tn", "ms", "mi", "in", "ky", "al", "ga", "oh", "wv", "ny", "nj", "pa", "va", "nc", "sc", "fl", "me", "nh", "vt", "ma", "ct", "ri", "de", "md", "wdc"};
 
-bool FilterState(const char* Key)
+bool FilterState(const char *Key)
 {
 	for (int loop = 0; loop < sizeof(gFilter) / sizeof(gFilter[0]); loop++)
 	{
@@ -49,13 +48,13 @@ bool FilterState(const char* Key)
 	return false;
 }
 
-State* AddNode(const char* Key, const int Child_Count ...)
+State *AddNode(const char *Key, const int Child_Count...)
 {
 	if (gFilterStates && !FilterState(Key))
 	{
 		return NULL;
 	}
-	State* ret_val = NULL;
+	State *ret_val = NULL;
 
 	// Check if this is an existing state
 	for (int state_counter = 0; state_counter < gStateCount; ++state_counter)
@@ -67,10 +66,9 @@ State* AddNode(const char* Key, const int Child_Count ...)
 		}
 	}
 
-
 	if (!ret_val)
 	{
-		strcpy(gStates[gStateCount].Key,Key);
+		strcpy(gStates[gStateCount].Key, Key);
 		ret_val = &gStates[gStateCount];
 		gStateCount++;
 		ret_val->Children_Count = 0;
@@ -85,7 +83,7 @@ State* AddNode(const char* Key, const int Child_Count ...)
 		ret_val->Children_Count = 0;
 		for (int i = 0; i < Child_Count; i++)
 		{
-			char* Child_Key = va_arg(child_list, char*);
+			char *Child_Key = va_arg(child_list, char *);
 			ret_val->Children[ret_val->Children_Count] = AddNode(Child_Key, 0);
 			// Will be null if filtered.
 			if (ret_val->Children[ret_val->Children_Count] != NULL)
@@ -151,7 +149,6 @@ void Load_US_States()
 	AddNode("md", 5, "pa", "wv", "va", "de", "wdc");
 	AddNode("wdc", 2, "md", "va");
 
-
 	/* UNUSED - PRINT NETWORK FOR DIAGNOSTICS
 	for (State* i = gStates; i != NULL; i = i->pNext)
 		{
@@ -167,7 +164,7 @@ void Load_US_States()
 		std::cin.ignore();*/
 }
 
-bool find_hamiltonian_recursively(State* const pStart)
+bool find_hamiltonian_recursively(State *const pStart)
 {
 	// Add current node to the journey
 	pStart->journeyPos = ++gVisitedCount;
@@ -193,7 +190,7 @@ bool find_hamiltonian_recursively(State* const pStart)
 		const int children_count = pStart->Children_Count;
 		for (int neighbour = 0; neighbour < children_count; ++neighbour)
 		{
-			if (pStart->Children[neighbour]->journeyPos==0)
+			if (pStart->Children[neighbour]->journeyPos == 0)
 			{
 				if (find_hamiltonian_recursively(pStart->Children[neighbour]))
 				{
@@ -210,17 +207,17 @@ bool find_hamiltonian_recursively(State* const pStart)
 	return false;
 }
 
-void find_hamiltonian(State* const pStart)
+void find_hamiltonian(State *const pStart)
 {
 	gVisitedCount = 0;
 
 	find_hamiltonian_recursively(pStart);
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	// Set initial state from first parameter (default "wdc")
-	char initial_state[4]{ "wdc" };
+	char initial_state[4]{"wdc"};
 	gFilterStates = true;
 	if (argc > 1)
 	{
@@ -237,8 +234,8 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < 5; i++)
 	{
 		Load_US_States();
-		State* start_state = NULL;
-		for (int i = 0; i< gStateCount; ++i)
+		State *start_state = NULL;
+		for (int i = 0; i < gStateCount; ++i)
 		{
 			if (strcmp(gStates[i].Key, initial_state) == 0)
 			{
